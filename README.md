@@ -7,6 +7,13 @@ First, install/use the correct version of node:
 ```bash
 nvm install # Only required once
 nvm use
+node -v # Should output `v22.11.0`
+```
+
+Next, install the required pacakages
+
+```bash
+npm install
 ```
 
 Then, run the development server:
