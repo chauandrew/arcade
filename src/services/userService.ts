@@ -1,13 +1,14 @@
 import { Db } from 'mongodb';
 import clientPromise from '@/lib/mongodb';
-import * as dotenv from 'dotenv';
 import { User } from '@/dto/user';
 import sha256 from 'crypto-js/sha256';
-dotenv.config();
 
 const collectionName: string = 'user';
 
-const doesUserExist: boolean = async (email: string, username: string) => {
+async function doesUserExist(
+  email: string,
+  username: string,
+): Promise<boolean> {
   if (!email || !username) {
     return false;
   }
@@ -20,13 +21,17 @@ const doesUserExist: boolean = async (email: string, username: string) => {
     return false;
   }
   return true;
-};
+}
 
-const createUser: void = async (
+async function createUser(
   email: string,
   username: string,
   password: string,
-) => {
+): Promise<void> {
+  if (await doesUserExist(email, username)) {
+    throw Error('User with this email or username already exists!');
+  }
+
   const db: Db = await clientPromise;
   const collection = db.collection<User>(collectionName);
 
@@ -37,7 +42,7 @@ const createUser: void = async (
     username: username,
     password: hashedPassword.toString(),
   });
-};
+}
 
 const UserService = {
   doesUserExist,
