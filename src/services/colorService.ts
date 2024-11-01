@@ -1,15 +1,15 @@
 import { Db } from 'mongodb';
 import clientPromise from '@/lib/mongodb';
 import * as dotenv from 'dotenv';
-import { color } from '@/dto/color';
+import { Color } from '@/dto/Color';
 dotenv.config();
 
 const collectionName: string = 'color';
 
-const getAllColors: () => Promise<color[]> = async () => {
+const getAllColors: () => Promise<Color[]> = async () => {
   const db: Db = await clientPromise;
-  const collection = db.collection<color>(collectionName);
-  const allColors: color[] = await collection.find({}).toArray();
+  const collection = db.collection<Color>(collectionName);
+  const allColors: Color[] = await collection.find({}).toArray();
   return allColors;
 };
 
