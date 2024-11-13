@@ -10,8 +10,11 @@ export default async function handler(
       const created = await HangmanService.createHangmanGame();
       res.status(200).json(created);
     } catch (e) {
-      console.error(e);
-      res.status(500);
+      if (e instanceof Error) {
+        res.status(500).json(e.message);
+      } else {
+        res.status(500);
+      }
     }
   } else {
     res.status(404);

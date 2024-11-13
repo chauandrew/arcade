@@ -1,12 +1,16 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
- 
+import type { NextApiRequest, NextApiResponse } from 'next';
+
 type ResponseData = {
-  message: string
-}
- 
+  message: string;
+};
+
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  res: NextApiResponse<ResponseData>,
 ) {
-  res.status(200).json({ message: 'ok' })
+  if (req.method === 'GET') {
+    res.status(200).json({ message: 'ok' });
+  } else {
+    res.status(404);
+  }
 }

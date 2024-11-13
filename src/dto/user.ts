@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongodb';
+
 export default class User {
-  _id?: string;
+  _id?: ObjectId;
   email: string;
   username: string;
   password: string;
@@ -8,11 +10,11 @@ export default class User {
     email: string;
     username: string;
     password: string;
-    _id?: string;
+    _id?: ObjectId;
   }) {
     this.email = opts.email;
     this.username = opts.username;
     this.password = opts.email;
-    this._id = opts.id;
+    this._id = opts._id;
   }
 }

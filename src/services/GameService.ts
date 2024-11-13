@@ -18,7 +18,7 @@ async function getAllGames(): Promise<Game[]> {
  * @param game
  * @returns
  */
-async function insertGame(game: Game): Promise<string> {
+async function insertGame(game: Game): Promise<ObjectId> {
   const db: Db = await clientPromise;
   const collection = db.collection<Game>(collectionName);
   const created = await collection.insertOne(game);
@@ -33,13 +33,13 @@ async function insertGame(game: Game): Promise<string> {
  * @param id ObjectId
  * @returns
  */
-async function getGameById(gameId: string): Promise<Game> {
+async function getGameById(gameId: ObjectId): Promise<Game> {
   if (!gameId) {
     throw Error(`Bad Input: id=${gameId}`);
   }
   const db: Db = await clientPromise;
   const collection = db.collection<Game>(collectionName);
-  const filter: Filter<Game> = { _id: new ObjectId(gameId) };
+  const filter: Filter<Game> = { _id: gameId };
   const game: Game = (await collection.findOne(filter)) as Game;
   if (game == null) {
     throw Error(`Could not find game with _id=${gameId}!`);
@@ -47,14 +47,14 @@ async function getGameById(gameId: string): Promise<Game> {
   return game;
 }
 
-async function updateGame(gameId: string, game: Game): Promise<void> {
+async function updateGame(gameId: ObjectId, game: Game): Promise<void> {
   if (!gameId) {
     throw Error(`Bad Input: id=${gameId}`);
   }
 
   const db: Db = await clientPromise;
   const collection = db.collection<Game>(collectionName);
-  const filter: Filter<Game> = { _id: new ObjectId(gameId) };
+  const filter: Filter<Game> = { _id: gameId };
   collection.replaceOne(filter, game);
 }
 
