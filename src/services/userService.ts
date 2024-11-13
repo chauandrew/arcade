@@ -1,6 +1,6 @@
 import { Db } from 'mongodb';
 import clientPromise from '@/lib/mongodb';
-import { User } from '@/dto/user';
+import User from '@/dto/User';
 import sha256 from 'crypto-js/sha256';
 
 const collectionName: string = 'user';
@@ -37,11 +37,12 @@ async function createUser(
 
   const hashedPassword = sha256(password);
 
-  await collection.insertOne({
-    email: email,
-    username: username,
+  const user: User = new User({
+    email,
+    username,
     password: hashedPassword.toString(),
   });
+  await collection.insertOne(user);
 }
 
 const UserService = {
