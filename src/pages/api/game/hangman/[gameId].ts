@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import HangmanService from '@/services/HangmanService';
+import { ObjectId } from 'mongodb';
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,11 +10,15 @@ export default async function handler(
   const letter: string = req.body.letter;
   if (req.method === 'POST') {
     try {
-      const response = await HangmanService.makeGuess(gameId, letter);
+      const gameObjectId = new ObjectId(gameId);
+      const response = await HangmanService.makeGuess(gameObjectId, letter);
       res.status(200).json(response);
     } catch (e) {
-      console.error(e);
-      res.status(500).json(e);
+      if (e instanceof Error) {
+        res.status(500).json(e.message);
+      } else {
+        res.status(500);
+      }
     }
   } else {
     res.status(404);

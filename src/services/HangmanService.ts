@@ -1,5 +1,6 @@
 import Hangman from '@/dto/Hangman';
 import GameService from './GameService';
+import { ObjectId } from 'mongodb';
 
 // TODO: have a word bank in the db
 const wordList = ['instruction', 'orange', 'area', 'player', 'resource'];
@@ -17,19 +18,19 @@ function isLetter(c: string) {
   return c.toLowerCase() != c.toUpperCase();
 }
 
-async function makeGuess(gameId: string, letter: string): Promise<Hangman> {
+async function makeGuess(gameId: ObjectId, letter: string): Promise<Hangman> {
   if (!gameId) {
-    throw Error('makeGuess::Invalid gameId!');
+    throw Error('Invalid gameId!');
   }
   if (!letter || letter.length != 1 || !isLetter(letter[0])) {
-    throw Error(`makeGuess::Invalid letter: ${letter}`);
+    throw Error(`Invalid letter: '${letter}'`);
   }
   letter = letter.toUpperCase();
 
   const game: Hangman = (await GameService.getGameById(gameId)) as Hangman;
 
   // if already guessed, return
-  if (game.isCompleted || letter in game.lettersGuessed) {
+  if (game.isCompleted || game.lettersGuessed.find((l) => l === letter)) {
     return game;
   }
 

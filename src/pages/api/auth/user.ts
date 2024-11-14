@@ -1,4 +1,4 @@
-import UserService from '@/services/userService';
+import UserService from '@/services/UserService';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
