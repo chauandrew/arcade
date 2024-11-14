@@ -1,4 +1,4 @@
 export const enum GameType {
-  Hangman,
-  Wordle,
+  Hangman = 'HANGMAN',
+  Wordle = 'WORDLE',
 }
